@@ -85,8 +85,14 @@ public class NFA implements NFAInterface {
 
     @Override
     public State getState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getState'");
+        Iterator<NFAState> iter = states.iterator();
+        while (iter.hasNext()) { // Iterate through states
+            NFAState state = (NFAState) iter.next();
+            if (state.getName().equals(name)) { // Found the state, return it
+                return state;
+            }
+        }
+        return null; // Name not in states, return null
     }
 
     @Override
