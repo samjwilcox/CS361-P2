@@ -87,8 +87,11 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean isStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isStart'");
+        if (startState.getName().equals(name)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
