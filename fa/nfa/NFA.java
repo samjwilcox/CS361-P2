@@ -1,5 +1,6 @@
 package fa.nfa;
 
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,8 +33,15 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean setFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFinal'");
+        Iterator<NFAState> iter = states.iterator();
+        while (iter.hasNext()) {
+            NFAState state = (NFAState) iter.next();
+            if (state.getName().equals(name)) { // Found the state, add to finalStates, return true
+                finalStates.add(state);
+                return true;
+            }
+        }
+        return false; // Name not in states, return false
     }
 
     @Override
