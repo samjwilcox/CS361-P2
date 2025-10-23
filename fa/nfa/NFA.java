@@ -27,8 +27,18 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean addState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addState'");
+
+        // Check if state with the same name already exists
+        Iterator<NFAState> iter = states.iterator();
+        while (iter.hasNext()) {
+            NFAState state = (NFAState) iter.next();
+            if (state.getName().equals(name)) { // State already exists, return false
+                return false;
+            }
+        }
+
+        states.add(new NFAState(name));
+        return true;
     }
 
     @Override
