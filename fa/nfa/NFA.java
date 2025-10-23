@@ -81,8 +81,14 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean isFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFinal'");
+        Iterator<NFAState> iter = finalStates.iterator();
+        while (iter.hasNext()) {
+            NFAState state = (NFAState) iter.next();
+            if (state.getName().equals(name)) { // Found the state in finalStates, return true
+                return true;
+            }
+        }
+        return false; // Name not in finalStates, return false
     }
 
     @Override
