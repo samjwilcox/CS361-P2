@@ -46,8 +46,15 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean setStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setStart'");
+        Iterator<NFAState> iter = states.iterator();
+        while (iter.hasNext()) {
+            NFAState state = (NFAState) iter.next();
+            if (state.getName().equals(name)) { // Found the state, set as startState, return true
+                startState = state;
+                return true;
+            }
+        }
+        return false; // Name not in states, return false
     }
 
     @Override
