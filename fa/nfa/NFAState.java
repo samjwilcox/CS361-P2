@@ -31,4 +31,13 @@ public class NFAState extends State {
     public String getName() {
         return name;
     }
+
+    /*
+     * Puts the character into the transitions map with the corresponding set of states
+     * @param symbol - the symbol of the transition
+     * @param toStates - the set of states to add for the transition
+     */
+    public void putTransition(char symbol, Set<NFAState> toStates) {
+        transitions.put(symbol, toStates);
+    }
 }
