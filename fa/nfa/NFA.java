@@ -52,8 +52,7 @@ public class NFA implements NFAInterface {
 
     @Override
     public void addSigma(char symbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addSigma'");
+        sigma.add(symbol);
     }
 
     @Override
