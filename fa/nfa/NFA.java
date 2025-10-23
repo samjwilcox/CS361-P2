@@ -1,10 +1,28 @@
 package fa.nfa;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import fa.State;
 
 public class NFA implements NFAInterface {
+
+    // Instance Variables
+    private Set<NFAState> states;
+    private Set<Character> sigma;
+    private NFAState startState;
+    private Set<NFAState> finalStates;
+
+    /*
+     * Constructor
+     */
+    public NFA() {
+        // Initialize instance variables
+        this.states = new LinkedHashSet<>();
+        this.sigma = new LinkedHashSet<>();
+        this.finalStates = new LinkedHashSet<>();
+        this.startState = null;
+    }
 
     @Override
     public boolean addState(String name) {
