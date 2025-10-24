@@ -136,8 +136,25 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addTransition'");
+        if (!sigma.contains(onSymb) && onSymb != 'e') {
+            return false; // Symbol not in alphabet and isn't epsilon
+        }
+        NFAState from = (NFAState) getState(fromState);
+        if (from == null) {
+            return false; // From state does not exist
+        }
+
+        Set<NFAState> toStateSet = new LinkedHashSet<>();
+        for (String toStateName : toStates) {
+            NFAState toState = (NFAState) getState(toStateName);
+            if (toState == null) {
+                return false; // To state does not exist
+            }
+            toStateSet.add(toState);
+        }
+
+        from.putTransition(onSymb, toStateSet);
+        return true;
     }
 
     @Override
