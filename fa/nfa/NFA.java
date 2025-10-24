@@ -13,6 +13,7 @@ public class NFA implements NFAInterface {
     private Set<Character> sigma;
     private NFAState startState;
     private Set<NFAState> finalStates;
+    private Boolean containsEpsilon;
 
     /*
      * Constructor
@@ -23,6 +24,7 @@ public class NFA implements NFAInterface {
         this.sigma = new LinkedHashSet<>();
         this.finalStates = new LinkedHashSet<>();
         this.startState = null;
+        this.containsEpsilon = false;
     }
 
     @Override
@@ -136,6 +138,10 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
+        if (onSymb == 'e') { // Update containsEpsilon if epsilon transition is added
+            containsEpsilon = true;
+        }
+
         if (!sigma.contains(onSymb) && onSymb != 'e') {
             return false; // Symbol not in alphabet and isn't epsilon
         }
@@ -159,8 +165,19 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean isDFA() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isDFA'");
+        if (containsEpsilon) {
+            return false; // NFA has epsilon transitions, cannot be DFA
+        }
+        for (NFAState state : states) {
+            for (char symbol : sigma) {
+                Set<NFAState> toStates = state.transitions.get(symbol);
+                if (toStates == null || toStates.size() != 1) {
+                    return false; // Either no transition or multiple transitions for a symbol
+                }
+            }
+        }
+
+        return true; // All states have exactly one transition for each symbol
     }
     
 }
