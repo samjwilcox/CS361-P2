@@ -1,3 +1,10 @@
+/**
+ * NFAState.java
+ * October 27, 2025
+ * NFAState class that extends State class.
+ * @author Tyler Fernandez; Sam Wilcox
+ * 
+ */
 package fa.nfa;
 
 import java.util.HashMap;
