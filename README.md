@@ -1,41 +1,42 @@
-# Project #: Project Name
+# Project 2: Nondeterministic Finite Automata
 
-* Author: Your Name
-* Class: CS121 Section #
-* Semester: Fall 2022
+* Author: Tyler Fernandez; Sam Wilcox
+* Class: CS361 Section 1
+* Semester: Fall 2025
 
 ## Overview
 
-Concisely explain what the program does. If this exceeds a couple of
-sentences, you're going too far. Generally you should be pulling this
-right from the project specification. Please don't just cut and
-paste, but paraphrase what is stated in the project specification.
+This program models an instance of a nondeterministic finite automata
+and its behavior.
 
 ## Reflection
 
-Write a brief (2-3 paragraph) reflection describing your experience with this 
-project. Answer the following questions (but feel free to add other insights): 
-- What worked well and what was a struggle?
-- What concepts still aren't quite clear?
-- What techniques did you use to make your code easy to debug and modify?
-- What would you change about your design process?
-- If you could go back in time, what would you tell yourself about doing this project?
+This project mostly went smoothly, the only issue being the eClosure method. This
+was a massive problem, as to even begin the other methods, eClosure first needed to be
+implemented. The problem that I was having a compile time error in testing. Eventually, 
+I realized that I needed to cast the getState as a NFAState, which fixed the error.
+After this project, I have a good understanding of DFAs after this project. 
+Some techniques that I used to make our code easy to debug and modify include using 
+even spacing and comments. Specifically for the NFA implementation, I had to open JFlap 
+and to see what the automata looked like, as well as to see how many max copies there were.
+
+If I could change something about my design process, I would give more time to identify
+edge cases and testing. My parent and I got caught up in a lot of other work, which
+made it hard to find time to thoroughly test the program. If I could go back in time,
+I would tell myself to start earlier on this project, as it would've allowed more time
+for testing. 
 
 ## Compiling and Using
 
-This section should tell the user how to compile your code.  It is
-also appropriate to instruct the user how to use your code. Does your
-program require user input? If so, what does your user need to know
-about it to use it as quickly as possible?
+To compile this code, upload the files to onyx and run the following commands:
+```
+javac -cp .:/usr/share/java/junit.jar ./test/nfa/NFATest.java
+```
+Then to run the tests:
+```
+java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/core.jar org.junit.runner.JUnitCore test.nfa.NFATest
+```
 
 ## Sources used
 
-If you used any sources outside of the lecture notes, class lab files,
-or text book you need to list them here. If you looked something up on
-stackoverflow.com and fail to cite it in this section it will be
-considered plagiarism and be dealt with accordingly. So be safe CITE!
-
-----------
-This README template is using Markdown. To preview your README output,
-you can copy your file contents to a Markdown editor/previewer such
-as [https://stackedit.io/editor](https://stackedit.io/editor).
+Used class files.
