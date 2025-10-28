@@ -1,6 +1,13 @@
-package fa.nfa;
+/**
+ * NFA.java
+ * October 27, 2025
+ * This class implements a Non-deterministic Finite Automaton (NFA).
+ * It provides methods to add states, transitions, and check if a string is accepted by the NFA.
+ * @author Tyler Fernandez; Sam Wilcox
+ * 
+ */
 
-import java.util.HashSet;
+package fa.nfa;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -105,15 +112,12 @@ public class NFA implements NFAInterface {
                 return false; // no path can continue
             }
         }
-
         // After consuming input, if any active state is final -> accept
         for (NFAState st : currentStates) {
             if (finalStates.contains(st)) return true;
         }
         return false;
     }
-
-    // end of accepts
 
     @Override
     public Set<Character> getSigma() {
