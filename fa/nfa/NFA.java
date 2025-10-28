@@ -78,9 +78,42 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean accepts(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        if (startState == null) {
+            return false;
+        }
+        // Start with the epsilon-closure of the start state
+        Set<NFAState> currentStates = eClosure(startState);
+
+        // Process each input symbol iteratively
+        for (int i = 0; i < s.length(); i++) {
+            char symb = s.charAt(i);
+            Set<NFAState> nextStates = new LinkedHashSet<>();
+            // For every active state, add all targets on symb
+            for (NFAState st : currentStates) {
+                Set<NFAState> targets = getToState(st, symb);
+                if (targets != null) {
+                    nextStates.addAll(targets);
+                }
+            }
+            // Take epsilon-closure of the whole next set
+            Set<NFAState> closure = new LinkedHashSet<>();
+            for (NFAState st : nextStates) {
+                closure.addAll(eClosure(st));
+            }
+            currentStates = closure;
+            if (currentStates.isEmpty()) {
+                return false; // no path can continue
+            }
+        }
+
+        // After consuming input, if any active state is final -> accept
+        for (NFAState st : currentStates) {
+            if (finalStates.contains(st)) return true;
+        }
+        return false;
     }
+
+    // end of accepts
 
     @Override
     public Set<Character> getSigma() {
@@ -159,8 +192,31 @@ public class NFA implements NFAInterface {
 
     @Override
     public int maxCopies(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'maxCopies'");
+        if (startState == null) {
+            return 0;
+        }
+        Set<NFAState> currentStates = eClosure(startState);
+        int max = currentStates.size();
+
+        for (int i = 0; i < s.length(); i++) {
+            char symb = s.charAt(i);
+            Set<NFAState> nextStates = new LinkedHashSet<>();
+            for (NFAState state : currentStates) {
+                Set<NFAState> toStates = getToState(state, symb);
+                if (toStates != null) {
+                    nextStates.addAll(toStates);
+                }
+            }
+            // take epsilon closure of all next states
+            Set<NFAState> closure = new LinkedHashSet<>();
+            for (NFAState st : nextStates) {
+                closure.addAll(eClosure(st));
+            }
+            currentStates = closure;
+            if (currentStates.size() > max) max = currentStates.size();
+        }
+        // At least 1 copy exists initially (if startState present)
+        return Math.max(1, max);
     }
 
     @Override
@@ -186,7 +242,15 @@ public class NFA implements NFAInterface {
             toStateSet.add(toState);
         }
 
-        from.putTransition(onSymb, toStateSet);
+        // Merge with existing transitions for the symbol if present
+        Set<NFAState> existing = from.transitions.get(onSymb);
+        if (existing == null) {
+            from.putTransition(onSymb, toStateSet);
+        } else {
+            Set<NFAState> merged = new LinkedHashSet<>(existing);
+            merged.addAll(toStateSet);
+            from.putTransition(onSymb, merged);
+        }
         return true;
     }
 
