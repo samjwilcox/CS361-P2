@@ -1,8 +1,10 @@
 package fa.nfa;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Stack;
 
 import fa.State;
 
@@ -86,10 +88,10 @@ public class NFA implements NFAInterface {
     }
 
     @Override
-    public State getState(String name) {
+    public NFAState getState(String name) {
         Iterator<NFAState> iter = states.iterator();
         while (iter.hasNext()) { // Iterate through states
-            NFAState state = (NFAState) iter.next();
+            NFAState state = iter.next();
             if (state.getName().equals(name)) { // Found the state, return it
                 return state;
             }
@@ -125,8 +127,34 @@ public class NFA implements NFAInterface {
 
     @Override
     public Set<NFAState> eClosure(NFAState s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eClosure'");
+
+        NFAState nfaState = (NFAState) getState(s.getName());
+        
+        Set<NFAState> closure = new LinkedHashSet<>();
+        Stack<NFAState> stack = new Stack<>();
+        
+        // Push the initial state onto the stack and add to closure
+        stack.push(nfaState);
+        closure.add(nfaState);
+        
+        // Continue while there are states to process
+        while (!stack.isEmpty()) {
+            NFAState current = stack.pop();
+            // Get all states reachable through epsilon transitions
+            Set<NFAState> epsilonTransitions = getToState(current, 'e');
+            
+            // If there are epsilon transitions from current state
+            if (epsilonTransitions != null) {
+                for (NFAState nextState : epsilonTransitions) {
+                    // If we haven't seen this state before
+                    if (!closure.contains(nextState)) {
+                        closure.add(nextState);
+                        stack.push(nextState);
+                    }
+                }
+            }
+        }
+        return closure;
     }
 
     @Override
